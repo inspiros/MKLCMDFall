@@ -1,0 +1,2 @@
+
+python3 run_cmdfall_classification.py --kernels=linear
