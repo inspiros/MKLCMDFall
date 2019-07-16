@@ -77,6 +77,7 @@ def train_test_evaluation(datasets, kernels, kernels_concate=None, C_mkl=None, C
 
 	KLtr = [None for i in Xtrs]
 	KLte = [None for i in Xtes]
+	overall_scores = {}
 	scores = {}
 	for i in range(len(Xtrs)):
 		KLtr[i] = kernels[i].apply(Xtrs[i])
@@ -150,10 +151,15 @@ def train_test_evaluation(datasets, kernels, kernels_concate=None, C_mkl=None, C
 				# save classification report of SVM on single modality
 				report(yte, y_pred, title='SVM ' + kernels[i].tostring(STREAMS), save=True, subdir=os.path.join(SAVE_SUB_DIR, prefix))
 
+		summary(scores, os.path.join(SAVE_SUB_DIR, prefix))
+		overall_scores.update(scores)
+		scores = {}
+
 	print('')
-	print('SUMARIZING')
-	summary(scores, SAVE_SUB_DIR)
-	return scores
+	print('')
+	print('SUMARIZING OVERALL RESULTS')
+	summary(overall_scores, None, save=False)
+	return overall_scores
 
 
 '''

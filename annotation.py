@@ -1,4 +1,5 @@
 import configs
+import numpy as np
 import stringutils
 import csv
 import re
@@ -140,11 +141,13 @@ def to_20_groups_labelset(labelset):
 	return labelset
 
 def to_6_groups_labelset(labelset):
+	temp = np.zeros(labelset.shape)
 	for i in range(0, labelset.shape[0]):
-		labelset[i] = to_6_groups(labelset[i])
-	return labelset
+		temp[i] = to_6_groups(labelset[i])
+	return temp
 
 def to_2_groups_labelset(labelset):
+	temp = np.zeros(labelset.shape)
 	for i in range(0, labelset.shape[0]):
-		labelset[i] = to_2_groups(labelset[i])
-	return labelset
+		temp[i] = to_2_groups(labelset[i])
+	return temp

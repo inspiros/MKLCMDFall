@@ -100,9 +100,19 @@ def confuse(y_true, y_pred, weights=None, title=None, save=False, show=False, su
 	plt.close()
 	return f1_score
 
-def summary(result, directory):
+
+def fix_scalar_dict(dict):
+	for key in dict.keys():
+		if type(dict[key]) is not type(list()):
+			dict[key] = [dict[key]]
+
+
+def summary(result, directory, save=True):
+	fix_scalar_dict(result)
 	print('')
 	print('Result:')
 	df_scores = pd.DataFrame.from_dict(result).T
+	df_scores.columns = ['f1']
 	print(df_scores)
-	df_scores.to_csv(os.path.join(RESULT_FOLDER, 'confusion', directory, 'result.csv'))
+	if save:
+		df_scores.to_csv(os.path.join(RESULT_FOLDER, 'confusion', directory, 'result.csv'))
