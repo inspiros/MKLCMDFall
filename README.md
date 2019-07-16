@@ -60,6 +60,9 @@ def polynomial_rgb(X, L=None): # Kernel computing call-back for rgb, always with
 	# Add hyperparameters if needed here, in this case, "degree=3"
 	return pairwise.polynomial_kernel(X, L, degree=3)
 
+def polynomial_of(X, L=None): # Kernel computing call-back for depth
+	return pairwise.polynomial_kernel(X, L, degree=4)
+
 def polynomial_depth(X, L=None): # Kernel computing call-back for depth
 	return pairwise.polynomial_kernel(X, L, degree=6)
 
@@ -69,6 +72,7 @@ def polynomial_concatenate(X, L=None): # Kernel computing call-back for concaten
 polynomial_params = Params(name = 'polynomial', # name of the kernels configuration
 					assignable_names = ['poly', 'polynomial'], # accepted names when you run command, eg: --kernels=poly
 					kernel_func_rgb = polynomial_rgb,
+					kernel_func_of = polynomial_of,
 					kernel_func_depth = polynomial_depth,
 					kernel_func_concatenate = polynomial_concatenate,
 					C_mkl = 0.25, # C of base learner of MKL
@@ -85,14 +89,18 @@ CONFIGS.append(polynomial_params.to_program_config())
 Execute file `run_cmdfall_classification.py`:
 - Run command manually from terminal with the following format:
 `python3 run_gesture_classification.py --streams=3 --kernels=linear`
+
 > Currently supported arguments:
+
 > |Argument|Meaning|eg.|
 > |---|---|---|
-> |`confusion_matrix`|Export confusion matrix or not, default True|True
-> |`classification_report`|Export classification report or not, default True|True
-> |`streams`|Number of modalities: 2 for RGB-OF, 3 (default) for RGB-OF-D|3
-> |`num_classes`|Number of classes: 20/6/2, None (default) for all|6
-> |`kernels`|Kernels configurations set in `configs.py`, accepting only keywords in `assignable_names`|linear
+> |`confusion_matrix`|Export confusion matrix or not, default True|True|
+> |`classification_report`|Export classification report or not, default True|True|
+> |`streams`|Number of modalities: 2 for RGB-OF, 3 (default) for RGB-OF-D|3|
+> |`num_classes`|Number of classes: 20/6/2, None (default) for all|6|
+> |`kernels`|Kernels configurations set in `configs.py`, accepting only keywords in `assignable_names`|linear|
+
+
 - Run multiple commands sequentially:
 -- Modify `evaluation_procedure` file
 -- Execute it from terminal `./evaluation_procedure`
